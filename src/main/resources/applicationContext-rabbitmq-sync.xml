@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+	<!-- 创建ConnectionFactory -->
+	<bean id="rabbitConnectionFactory"
+		class="org.springframework.amqp.rabbit.connection.CachingConnectionFactory">
+		<constructor-arg value="${rabbit.hosts}"></constructor-arg>
+		<property name="username" value="${rabbit.username}" />
+		<property name="password" value="${rabbit.password}" />
+		<property name="virtualHost" value="${rabbit.virtualHost}" />
+		<property name="channelCacheSize" value="5" />
+	</bean>
+	
+	  <!-- 创建rabbitTemplate 消息模板类 -->  
+    <bean id="rabbitTemplate"  
+        class="org.springframework.amqp.rabbit.core.RabbitTemplate">  
+        <constructor-arg ref="rabbitConnectionFactory"></constructor-arg>  
+        <property name="queue" value="${rabbit.queue}"></property>  
+        <property name="routingKey" value="${rabbit.routingKey}"></property>    
+    </bean>  
+	
+
+</beans>
